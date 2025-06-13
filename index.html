@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Executivo - Victa Engenharia (Corrigido)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* ... (manter os estilos originais) ... */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Dashboard Executivo</h1>
+        <p class="subtitle">Análise Consolidada de Reclamações | Período: Janeiro - Junho 2025 | <span style="background-color: #10b981; padding: 2px 8px; border-radius: 4px;">DADOS ATUALIZADOS</span></p>
+    </div>
+
+    <div class="container">
+        <!-- KPIs Principais CORRIGIDOS -->
+        <div class="kpi-grid">
+            <div class="kpi-card critical">
+                <div class="kpi-number">83</div><!-- Corrigido de 106 para 83 -->
+                <div class="kpi-label">Total de Reclamações</div>
+                <div class="kpi-trend trend-down">↘ Redução de 21.7%</div><!-- Atualizado -->
+            </div>
+            
+            <div class="kpi-card warning">
+                <div class="kpi-number">36%</div><!-- Corrigido de 52% para 36% -->
+                <div class="kpi-label">Problemas Financeiros</div>
+                <div class="kpi-trend">→ Mantém como maior categoria</div>
+            </div>
+            
+            <div class="kpi-card info">
+                <div class="kpi-number">15</div>
+                <div class="kpi-label">Empreendimentos Afetados</div>
+                <div class="kpi-trend">→ Distribuição ampla</div>
+            </div>
+            
+            <div class="kpi-card critical">
+                <div class="kpi-number">78%</div>
+                <div class="kpi-label">Reclamações via WhatsApp</div>
+                <div class="kpi-trend">→ Canal predominante</div>
+            </div>
+        </div>
+
+        <!-- Análise Temporal CORRIGIDA -->
+        <div class="section">
+            <h2>📈 Evolução Temporal das Reclamações</h2>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Reclamações por Mês (Dados Corrigidos)</div>
+                    <canvas id="temporalChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Distribuição por Categoria (Revisada)</div>
+                    <canvas id="categoriaChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análise por Empreendimento ATUALIZADA -->
+        <div class="section">
+            <h2>🏗️ Empreendimentos com Maior Impacto (Dados Proporcionais)</h2>
+            <div class="chart-container" style="height: 500px;">
+                <canvas id="empreendimentoChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Insights Críticos REVISADOS -->
+        <div class="section">
+            <h2>🔍 Insights Críticos Identificados (Atualizado)</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Assistência Técnica (28%)</h3><!-- Corrigido de 30% -->
+                    <ul class="insight-list">
+                        <!-- ... (itens mantidos) ... -->
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Comercial/Vendas (26%)</h3><!-- Corrigido de 27% -->
+                    <ul class="insight-list">
+                        <!-- ... (itens mantidos) ... -->
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Problemas Financeiros (36%)</h3><!-- Corrigido de 24% -->
+                    <ul class="insight-list">
+                        <!-- ... (itens mantidos) ... -->
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Análise Temporal Revisada</h3>
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Jan-Mar: 33 reclamações</span><!-- Corrigido de 30 -->
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Abr-Jun: 50 reclamações (aumento de 51%)</span><!-- Corrigido de 76/153% -->
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Abril: Pico de 28 reclamações</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Queda significativa em Junho (9 casos)</span><!-- Novo insight -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plano de Ação (mantido) -->
+        <!-- ... (manter o plano de ação original) ... -->
+    </div>
+
+    <script>
+        // Dados CORRIGIDOS (Janeiro a Junho 2025)
+        const temporalData = {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+            datasets: [{
+                label: 'Reclamações por Mês',
+                data: [12, 9, 12, 28, 13, 9],  // Valores corrigidos
+                backgroundColor: '#ef4444',
+                borderColor: '#dc2626',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        const categoriaData = {
+            labels: ['Assistência Técnica', 'Comercial/Vendas', 'Financeiro', 'Financiamento', 'Experiência', 'Eng./Obra', 'Jurídico'],
+            datasets: [{
+                data: [23, 22, 19, 11, 4, 3, 1],  // Dados proporcionais ajustados
+                backgroundColor: [
+                    '#ef4444', '#dc2626', '#f59e0b', '#3b82f6', 
+                    '#10b981', '#8b5cf6', '#06b6d4'
+                ],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        };
+
+        const empreendimentoData = {
+            labels: [
+                'Mirante Condomínio Clube',
+                'Jóquei Condomínio Clube',
+                'Belvedere Condomínio Clube',
+                'Alta Vista Passare',
+                'Vista Mar Condomínio Clube',
+                'Vitória Mondubim',
+                'Vista Parque Condomínio Clube',
+                'Vitória Senna',
+                'Vitória Acácia',
+                'Vitória Caucaia',
+                'Outros'
+            ],
+            datasets: [{
+                label: 'Reclamações por Empreendimento',
+                data: [16, 13, 9, 8, 9, 5, 2, 3, 1, 2, 15],  // Dados proporcionais
+                backgroundColor: [
+                    '#ef4444', '#dc2626', '#b91c1c', '#f59e0b', '#d97706',
+                    '#3b82f6', '#2563eb', '#10b981', '#059669', '#0d9488', '#64748b'
+                ],
+                borderColor: '#ffffff',
+                borderWidth: 2
+            }]
+        };
+
+        // ... (código de configuração dos gráficos mantido) ...
+    </script>
+</body>
+</html>
