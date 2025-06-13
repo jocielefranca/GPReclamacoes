@@ -3,29 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Executivo - Victa Engenharia (Corrigido)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <title>Dashboard Executivo - Victa Engenharia</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ... (manter os estilos originais) ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .badge {
+            background-color: #10b981;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .kpi-card.critical {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+        }
+        
+        .kpi-card.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+        }
+        
+        .kpi-card.info {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        }
+        
+        .kpi-card.success {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+        
+        .kpi-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            line-height: 1;
+        }
+        
+        .kpi-label {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-trend {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: auto;
+        }
+        
+        .trend-up {
+            color: #ef4444;
+        }
+        
+        .trend-down {
+            color: #10b981;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: 400px;
+            position: relative;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .insight-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .insight-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        .insight-list {
+            list-style: none;
+        }
+        
+        .insight-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        
+        .priority-high {
+            background: #ef4444;
+        }
+        
+        .priority-medium {
+            background: #f59e0b;
+        }
+        
+        .priority-low {
+            background: #10b981;
+        }
+        
+        .action-plan {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .action-plan h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .action-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .timeline-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .timeline-item h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timeline-item ul {
+            list-style: none;
+        }
+        
+        .timeline-item li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .timeline-item li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+        }
+        
+        @media (max-width: 768px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-timeline {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .kpi-number {
+                font-size: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📊 Dashboard Executivo</h1>
-        <p class="subtitle">Análise Consolidada de Reclamações | Período: Janeiro - Junho 2025 | <span style="background-color: #10b981; padding: 2px 8px; border-radius: 4px;">DADOS ATUALIZADOS</span></p>
+        <p class="subtitle">Análise Consolidada de Reclamações | Período: Janeiro - Junho 2025 <span class="badge">DADOS ATUALIZADOS</span></p>
     </div>
 
     <div class="container">
-        <!-- KPIs Principais CORRIGIDOS -->
+        <!-- KPIs Principais -->
         <div class="kpi-grid">
             <div class="kpi-card critical">
-                <div class="kpi-number">83</div><!-- Corrigido de 106 para 83 -->
+                <div class="kpi-number">83</div>
                 <div class="kpi-label">Total de Reclamações</div>
-                <div class="kpi-trend trend-down">↘ Redução de 21.7%</div><!-- Atualizado -->
+                <div class="kpi-trend trend-down">↘ Redução de 21.7%</div>
             </div>
             
             <div class="kpi-card warning">
-                <div class="kpi-number">36%</div><!-- Corrigido de 52% para 36% -->
+                <div class="kpi-number">36%</div>
                 <div class="kpi-label">Problemas Financeiros</div>
                 <div class="kpi-trend">→ Mantém como maior categoria</div>
             </div>
@@ -43,7 +350,7 @@
             </div>
         </div>
 
-        <!-- Análise Temporal CORRIGIDA -->
+        <!-- Análise Temporal -->
         <div class="section">
             <h2>📈 Evolução Temporal das Reclamações</h2>
             <div class="charts-grid">
@@ -58,49 +365,94 @@
             </div>
         </div>
 
-        <!-- Análise por Empreendimento ATUALIZADA -->
+        <!-- Análise por Empreendimento -->
         <div class="section">
-            <h2>🏗️ Empreendimentos com Maior Impacto (Dados Proporcionais)</h2>
+            <h2>🏗️ Empreendimentos com Maior Impacto</h2>
             <div class="chart-container" style="height: 500px;">
                 <canvas id="empreendimentoChart"></canvas>
             </div>
         </div>
 
-        <!-- Insights Críticos REVISADOS -->
+        <!-- Insights Críticos -->
         <div class="section">
-            <h2>🔍 Insights Críticos Identificados (Atualizado)</h2>
+            <h2>🔍 Insights Críticos Identificados</h2>
             <div class="insights-grid">
                 <div class="insight-card">
-                    <h3>Assistência Técnica (28%)</h3><!-- Corrigido de 30% -->
-                    <ul class="insight-list">
-                        <!-- ... (itens mantidos) ... -->
-                    </ul>
-                </div>
-                
-                <div class="insight-card">
-                    <h3>Comercial/Vendas (26%)</h3><!-- Corrigido de 27% -->
-                    <ul class="insight-list">
-                        <!-- ... (itens mantidos) ... -->
-                    </ul>
-                </div>
-                
-                <div class="insight-card">
-                    <h3>Problemas Financeiros (36%)</h3><!-- Corrigido de 24% -->
-                    <ul class="insight-list">
-                        <!-- ... (itens mantidos) ... -->
-                    </ul>
-                </div>
-                
-                <div class="insight-card">
-                    <h3>Análise Temporal Revisada</h3>
+                    <h3>Assistência Técnica (28%)</h3>
                     <ul class="insight-list">
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span>Jan-Mar: 33 reclamações</span><!-- Corrigido de 30 -->
+                            <span>Infiltrações e vazamentos recorrentes (Alta Vista)</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span>Abr-Jun: 50 reclamações (aumento de 51%)</span><!-- Corrigido de 76/153% -->
+                            <span>Múltiplos protocolos sem resolução efetiva</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Falta de água causando pressão inadequada</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Técnicos que apenas fazem vídeos sem reparos</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Comercial/Vendas (26%)</h3>
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Não cumprimento de campanhas promocionais</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Atraso na entrega de brindes (TVs, ar-condicionado)</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Falta de comunicação sobre processos de entrega</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Problemas com acessórios e itens prometidos</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Problemas Financeiros (36%)</h3>
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Negativação indevida após distrato (múltiplos casos)</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Alterações unilaterais pela CEF (R$ 36k → R$ 170k)</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Cobranças automáticas em feriados (Abril)</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Demora na regularização de pagamentos</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>Análise Temporal Crítica</h3>
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Jan-Mar: 33 reclamações</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Abr-Jun: 50 reclamações (aumento de 51%)</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-high"></div>
@@ -108,36 +460,76 @@
                         </li>
                         <li>
                             <div class="priority-indicator priority-medium"></div>
-                            <span>Queda significativa em Junho (9 casos)</span><!-- Novo insight -->
+                            <span>Queda significativa em Junho (9 casos)</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Plano de Ação (mantido) -->
-        <!-- ... (manter o plano de ação original) ... -->
+        <!-- Plano de Ação -->
+        <div class="action-plan">
+            <h2>🎯 Plano de Ação Estratégico</h2>
+            <div class="action-timeline">
+                <div class="timeline-item">
+                    <h4>🚨 Ações Imediatas (0-30 dias)</h4>
+                    <ul>
+                        <li>Criar força-tarefa para negativações indevidas</li>
+                        <li>Implementar protocolo de emergência financeira</li>
+                        <li>Estabelecer SLA de 24h para primeira resposta</li>
+                        <li>Auditoria urgente nos empreendimentos críticos</li>
+                        <li>Treinamento intensivo da equipe de atendimento</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>⚡ Ações de Médio Prazo (30-90 dias)</h4>
+                    <ul>
+                        <li>Revisar processo de distrato e cobrança</li>
+                        <li>Implementar sistema CRM integrado</li>
+                        <li>Melhorar comunicação com CEF e parceiros</li>
+                        <li>Criar processo de escalação automatizado</li>
+                        <li>Implementar pesquisa de satisfação</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>🔄 Ações de Longo Prazo (90+ dias)</h4>
+                    <ul>
+                        <li>Revisar parcerias com correspondentes</li>
+                        <li>Desenvolver programa de fidelização</li>
+                        <li>Implementar protocolo de transparência</li>
+                        <li>Criar centro de excelência em atendimento</li>
+                        <li>Desenvolver dashboard de monitoramento</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Dados CORRIGIDOS (Janeiro a Junho 2025)
+        // Dados consolidados dos 6 meses (Janeiro a Junho 2025)
         const temporalData = {
-            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
             datasets: [{
                 label: 'Reclamações por Mês',
-                data: [12, 9, 12, 28, 13, 9],  // Valores corrigidos
-                backgroundColor: '#ef4444',
-                borderColor: '#dc2626',
+                data: [12, 9, 12, 28, 13, 9],
+                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                borderColor: '#ef4444',
                 borderWidth: 3,
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#ef4444',
+                pointBorderWidth: 2,
+                pointRadius: 5
             }]
         };
 
         const categoriaData = {
             labels: ['Assistência Técnica', 'Comercial/Vendas', 'Financeiro', 'Financiamento', 'Experiência', 'Eng./Obra', 'Jurídico'],
             datasets: [{
-                data: [23, 22, 19, 11, 4, 3, 1],  // Dados proporcionais ajustados
+                data: [23, 22, 19, 11, 4, 3, 1],
                 backgroundColor: [
                     '#ef4444', '#dc2626', '#f59e0b', '#3b82f6', 
                     '#10b981', '#8b5cf6', '#06b6d4'
@@ -163,17 +555,119 @@
             ],
             datasets: [{
                 label: 'Reclamações por Empreendimento',
-                data: [16, 13, 9, 8, 9, 5, 2, 3, 1, 2, 15],  // Dados proporcionais
+                data: [16, 13, 9, 8, 9, 5, 2, 3, 1, 2, 15],
                 backgroundColor: [
-                    '#ef4444', '#dc2626', '#b91c1c', '#f59e0b', '#d97706',
-                    '#3b82f6', '#2563eb', '#10b981', '#059669', '#0d9488', '#64748b'
+                    'rgba(239, 68, 68, 0.7)', 'rgba(220, 38, 38, 0.7)', 'rgba(185, 28, 28, 0.7)', 
+                    'rgba(245, 158, 11, 0.7)', 'rgba(217, 119, 6, 0.7)',
+                    'rgba(59, 130, 246, 0.7)', 'rgba(37, 99, 235, 0.7)', 'rgba(16, 185, 129, 0.7)', 
+                    'rgba(5, 150, 105, 0.7)', 'rgba(13, 148, 136, 0.7)', 'rgba(100, 116, 139, 0.7)'
                 ],
                 borderColor: '#ffffff',
                 borderWidth: 2
             }]
         };
 
-        // ... (código de configuração dos gráficos mantido) ...
+        // Configuração dos gráficos
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        font: {
+                            size: 11
+                        },
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 13
+                    }
+                }
+            }
+        };
+
+        // Criar gráficos após o carregamento da página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico Temporal
+            new Chart(document.getElementById('temporalChart'), {
+                type: 'line',
+                data: temporalData,
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(241, 245, 249, 0.8)'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Categoria
+            new Chart(document.getElementById('categoriaChart'), {
+                type: 'doughnut',
+                data: categoriaData,
+                options: {
+                    ...chartOptions,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            ...chartOptions.plugins.legend,
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Empreendimentos
+            new Chart(document.getElementById('empreendimentoChart'), {
+                type: 'bar',
+                data: empreendimentoData,
+                options: {
+                    ...chartOptions,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(241, 245, 249, 0.8)'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
