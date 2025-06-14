@@ -3,214 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Executivo - Victa & Diagonal</title>
+    <title>Dashboard Executivo - Victa & Diagonal Engenharia</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --primary: #1e40af;
-            --secondary: #3b82f6;
-            --critical: #ef4444;
-            --warning: #f59e0b;
-            --success: #10b981;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --diagonal: #8b5cf6;
-            --victa: #06b6d4;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            color: var(--dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
             line-height: 1.6;
-            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .tabs-container {
+            background: #e2e8f0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tab-btn.active {
+            background: #1e40af;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
+            padding: 2rem;
         }
         
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 2.5rem 3rem;
-            position: relative;
-            z-index: 1;
+        .tab-content {
+            display: none;
         }
         
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            z-index: -1;
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
         
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo {
-            background: rgba(255, 255, 255, 0.15);
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .company-tags {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .company-tag {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .victa-tag {
-            background: rgba(6, 182, 212, 0.2);
-            color: var(--victa);
-            border: 1px solid var(--victa);
-        }
-        
-        .diagonal-tag {
-            background: rgba(139, 92, 246, 0.2);
-            color: var(--diagonal);
-            border: 1px solid var(--diagonal);
-        }
-        
-        .header-title h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-        
-        .header-title p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-        }
-        
-        .period-info {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        /* Executive Summary */
-        .summary {
-            padding: 2.5rem 3rem;
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border-bottom: 1px solid #fcd34d;
-        }
-        
-        .summary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .summary-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .status-tag {
-            background: var(--critical);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 1rem;
-            font-weight: 600;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 3rem;
         }
         
         .kpi-card {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border-left: 4px solid;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
         }
         
-        .kpi-card:hover {
-            transform: translateY(-5px);
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
         }
         
         .kpi-card.critical {
-            border-left-color: var(--critical);
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
         }
         
         .kpi-card.warning {
-            border-left-color: var(--warning);
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
         }
         
         .kpi-card.info {
-            border-left-color: var(--secondary);
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
         }
         
         .kpi-card.success {
-            border-left-color: var(--success);
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
         }
         
         .kpi-number {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
-            color: var(--dark);
+            color: #1e293b;
         }
         
         .kpi-label {
@@ -222,131 +154,39 @@
         .kpi-trend {
             font-size: 0.9rem;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
         
         .trend-up {
-            color: var(--critical);
+            color: #ef4444;
         }
         
         .trend-down {
-            color: var(--success);
+            color: #10b981;
         }
         
-        .alert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1.5rem;
-        }
-        
-        .alert-card {
-            background: rgba(239, 68, 68, 0.08);
-            border-left: 4px solid var(--critical);
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .alert-icon {
-            color: var(--critical);
-            font-size: 1.2rem;
-            margin-top: 3px;
-        }
-        
-        /* Quantitative Section */
         .section {
-            padding: 2.5rem 3rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.8rem;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-left: 35px;
-        }
-        
-        .performance-table {
-            width: 100%;
-            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-radius: 12px;
-            overflow: hidden;
         }
         
-        .performance-table th {
-            background: var(--primary);
-            color: white;
-            text-align: left;
-            padding: 15px 20px;
-            font-weight: 600;
-        }
-        
-        .performance-table td {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .performance-table tr:nth-child(even) {
-            background: #f8fafc;
-        }
-        
-        .performance-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .status-indicator {
-            display: inline-flex;
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .status-ok {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-        
-        .status-warning {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-        }
-        
-        .status-alert {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--critical);
+            gap: 10px;
         }
         
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -355,9 +195,8 @@
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             height: 400px;
-            position: relative;
         }
         
         .chart-title {
@@ -365,57 +204,26 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: #374151;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        /* Qualitative Analysis */
-        .qualitative-grid {
+        .insights-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin-top: 1.5rem;
         }
         
-        .qualitative-card {
+        .insight-card {
             background: white;
             border-radius: 12px;
-            padding: 1.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--diagonal);
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
-        .qualitative-card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--diagonal);
-        }
-        
-        .priority-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-top: 0.35rem;
-            flex-shrink: 0;
-        }
-        
-        .priority-high {
-            background: var(--critical);
-        }
-        
-        .priority-medium {
-            background: var(--warning);
-        }
-        
-        .priority-low {
-            background: var(--success);
+        .insight-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
         }
         
         .insight-list {
@@ -423,7 +231,7 @@
         }
         
         .insight-list li {
-            padding: 0.9rem 0;
+            padding: 0.8rem 0;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: flex-start;
@@ -434,209 +242,57 @@
             border-bottom: none;
         }
         
-        .criticity-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 1rem;
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
         }
         
-        .criticity-card {
-            padding: 1.5rem;
-            border-radius: 10px;
-            background: #f8fafc;
+        .priority-high {
+            background: #ef4444;
         }
         
-        .criticity-critical {
-            border: 2px solid var(--critical);
+        .priority-medium {
+            background: #f59e0b;
         }
         
-        .criticity-moderate {
-            border: 2px solid var(--warning);
+        .priority-low {
+            background: #10b981;
         }
         
-        .criticity-low {
-            border: 2px solid var(--success);
-        }
-        
-        .criticity-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        
-        .criticity-critical .criticity-header {
-            color: var(--critical);
-        }
-        
-        .criticity-moderate .criticity-header {
-            color: var(--warning);
-        }
-        
-        .criticity-low .criticity-header {
-            color: var(--success);
-        }
-        
-        .problem-list {
-            list-style: none;
-            padding-left: 1.5rem;
-        }
-        
-        .problem-list li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.7rem;
-        }
-        
-        .problem-list li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: #94a3b8;
-            font-size: 1.2rem;
-            line-height: 1;
-        }
-        
-        /* Performance Indicators */
-        .performance-section {
-            margin: 2.5rem 0;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border-left: 4px solid var(--diagonal);
-        }
-        
-        .performance-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--dark);
-        }
-        
-        .performance-indicators {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .indicator-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        
-        .indicator-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .indicator-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        .indicator-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-        
-        .indicator-critical {
-            color: var(--critical);
-        }
-        
-        .indicator-warning {
-            color: var(--warning);
-        }
-        
-        .indicator-success {
-            color: var(--success);
-        }
-        
-        .indicator-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-        
-        .criticidade-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        
-        .criticidade-high {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--critical);
-        }
-        
-        .criticidade-medium {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-        
-        .criticidade-low {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-        
-        /* Recommendations */
         .action-plan {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             color: white;
-            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
         }
         
         .action-plan h2 {
             color: white;
             border-bottom: 3px solid rgba(255,255,255,0.3);
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .action-timeline {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.8rem;
-            margin-top: 1.5rem;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
         
         .timeline-item {
-            background: rgba(255,255,255,0.12);
-            border-radius: 12px;
-            padding: 1.8rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
             backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
-        }
-        
-        .timeline-item:hover {
-            transform: translateY(-5px);
         }
         
         .timeline-item h4 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 1rem;
         }
         
         .timeline-item ul {
@@ -644,307 +300,404 @@
         }
         
         .timeline-item li {
-            padding: 0.6rem 0;
+            padding: 0.5rem 0;
             position: relative;
-            padding-left: 1.8rem;
-            line-height: 1.5;
+            padding-left: 1.5rem;
         }
         
         .timeline-item li::before {
             content: '▶';
             position: absolute;
             left: 0;
-            color: #93c5fd;
-            font-size: 0.8rem;
+            color: #60a5fa;
         }
         
-        /* Footer */
-        .footer {
-            padding: 2.5rem 3rem;
-            background: var(--dark);
-            color: white;
-        }
-        
-        .footer-grid {
+        /* Performance Indicators */
+        .performance-indicators {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .footer-section h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.2rem;
-            color: #93c5fd;
-        }
-        
-        .kpi-list {
-            list-style: none;
-        }
-        
-        .kpi-list li {
-            padding: 0.7rem 0;
-            border-bottom: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .kpi-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .kpi-value {
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2px 10px;
-            border-radius: 4px;
-        }
-        
-        .conclusion {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #334155;
         }
         
-        .conclusion h3 {
-            margin-bottom: 1rem;
+        .indicator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid;
         }
         
-        .conclusion-list {
-            list-style: none;
+        .indicator-card.critical {
+            border-left-color: #ef4444;
         }
         
-        .conclusion-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
+        .indicator-card.warning {
+            border-left-color: #f59e0b;
         }
         
-        .conclusion-list li::before {
-            content: '•';
-            color: #93c5fd;
-            font-weight: bold;
+        .indicator-card.success {
+            border-left-color: #10b981;
         }
         
-        @media (max-width: 992px) {
-            .header {
-                padding: 2rem;
-            }
-            
-            .header-title h1 {
-                font-size: 2.2rem;
-            }
-            
-            .charts-grid, .qualitative-grid, .criticity-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .performance-indicators {
-                grid-template-columns: 1fr;
-            }
-            
-            .section, .summary, .action-plan, .footer {
-                padding: 2rem;
-            }
+        .indicator-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .indicator-title {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .indicator-criticity {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .criticity-high {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        
+        .criticity-medium {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+        
+        .criticity-low {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
         }
         
         @media (max-width: 768px) {
-            .header-top {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
+            .kpi-grid {
+                grid-template-columns: 1fr;
             }
             
             .charts-grid {
                 grid-template-columns: 1fr;
             }
             
-            .chart-container {
-                height: 350px;
+            .insights-grid {
+                grid-template-columns: 1fr;
             }
             
-            .performance-table {
-                display: block;
-                overflow-x: auto;
+            .action-timeline {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .kpi-number {
+                font-size: 2.5rem;
+            }
+            
+            .performance-indicators {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-top">
-                <div class="logo-container">
-                    <div class="logo">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div>
-                        <h3>Victa & Diagonal Engenharia</h3>
-                        <p>Relatório Executivo Estratégico</p>
-                        <div class="company-tags">
-                            <span class="company-tag victa-tag">Victa Engenharia</span>
-                            <span class="company-tag diagonal-tag">Diagonal Engenharia</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="period-info">
-                    <i class="far fa-calendar-alt"></i>
-                    Período: Janeiro a Junho 2025
-                </div>
-            </div>
-            
-            <div class="header-title">
-                <h1>Análise Consolidada de Reclamações</h1>
-                <p>Relatório estratégico para tomada de decisão executiva com indicadores críticos e plano de ação</p>
-            </div>
-        </div>
+    <div class="header">
+        <h1>📊 Dashboard Executivo</h1>
+        <p class="subtitle">Análise Consolidada de Reclamações | Período: Janeiro - Junho 2025</p>
+    </div>
+    
+    <div class="tabs-container">
+        <button class="tab-btn active" data-tab="victa">
+            <i class="fas fa-building"></i> Victa Engenharia
+        </button>
+        <button class="tab-btn" data-tab="diagonal">
+            <i class="fas fa-city"></i> Diagonal Engenharia
+        </button>
+        <button class="tab-btn" data-tab="consolidado">
+            <i class="fas fa-chart-pie"></i> Visão Consolidada
+        </button>
+    </div>
 
-        <!-- Executive Summary -->
-        <div class="summary">
-            <div class="summary-header">
-                <div class="summary-title">
-                    <i class="fas fa-bullseye"></i>
-                    Sumário Executivo
-                    <div class="status-tag">STATUS: CRÍTICO</div>
-                </div>
-                <div class="summary-actions">
-                    <button style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 500;">
-                        <i class="fas fa-download"></i> Exportar Relatório
-                    </button>
-                </div>
-            </div>
-            
+    <div class="container">
+        <!-- Conteúdo da Victa Engenharia -->
+        <div id="victa-content" class="tab-content active">
+            <!-- KPIs Principais -->
             <div class="kpi-grid">
                 <div class="kpi-card critical">
-                    <div class="kpi-number">4.318</div>
-                    <div class="kpi-label">Total de Atendimentos</div>
-                    <div class="kpi-trend">Base consolidada</div>
+                    <div class="kpi-number">106</div>
+                    <div class="kpi-label">Total de Reclamações</div>
+                    <div class="kpi-trend trend-up">↗ Crescimento constante</div>
                 </div>
                 
                 <div class="kpi-card warning">
-                    <div class="kpi-number">147</div>
-                    <div class="kpi-label">Reclamações Registradas</div>
-                    <div class="kpi-trend">3,40% do total</div>
+                    <div class="kpi-number">52%</div>
+                    <div class="kpi-label">Problemas Financeiros</div>
+                    <div class="kpi-trend trend-up">↗ Maior categoria</div>
+                </div>
+                
+                <div class="kpi-card info">
+                    <div class="kpi-number">15</div>
+                    <div class="kpi-label">Empreendimentos Afetados</div>
+                    <div class="kpi-trend">→ Distribuição ampla</div>
+                </div>
+                
+                <div class="kpi-card critical">
+                    <div class="kpi-number">78%</div>
+                    <div class="kpi-label">Reclamações via WhatsApp</div>
+                    <div class="kpi-trend">→ Canal predominante</div>
+                </div>
+            </div>
+
+            <!-- Análise Temporal -->
+            <div class="section">
+                <h2><i class="fas fa-chart-line"></i> Evolução Temporal das Reclamações</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">Reclamações por Mês</div>
+                        <canvas id="temporalChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Distribuição por Categoria</div>
+                        <canvas id="categoriaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Análise por Empreendimento -->
+            <div class="section">
+                <h2><i class="fas fa-building"></i> Empreendimentos com Maior Impacto</h2>
+                <div class="chart-container" style="height: 500px;">
+                    <canvas id="empreendimentoChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Insights Críticos -->
+            <div class="section">
+                <h2><i class="fas fa-search"></i> Insights Críticos Identificados</h2>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h3>Assistência Técnica (30%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Infiltrações e vazamentos recorrentes (Alta Vista)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Múltiplos protocolos sem resolução efetiva</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Falta de água causando pressão inadequada</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Técnicos que apenas fazem vídeos sem reparos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>Comercial/Vendas (27%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Não cumprimento de campanhas promocionais</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Atraso na entrega de brindes (TVs, ar-condicionado)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Falta de comunicação sobre processos de entrega</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Problemas com acessórios e itens prometidos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>Problemas Financeiros (24%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Negativação indevida após distrato (múltiplos casos)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Alterações unilaterais pela CEF (R$ 36k → R$ 170k)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Cobranças automáticas em feriados (Abril)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Demora na regularização de pagamentos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>Análise Temporal Crítica</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Jan-Mar: 30 reclamações (crescimento de 20%)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Abr-Jun: 76 reclamações (explosão de 153%)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Abril: Pico de 28 reclamações (maior mês)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Tendência de crescimento insustentável</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Indicadores de Performance -->
+            <div class="section">
+                <h2><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h2>
+                <div class="performance-indicators">
+                    <div class="indicator-card critical">
+                        <div class="indicator-value">28%</div>
+                        <div class="indicator-title">Obra/Construção</div>
+                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
+                    </div>
+                    
+                    <div class="indicator-card warning">
+                        <div class="indicator-value">24%</div>
+                        <div class="indicator-title">Técnicos Pós-Entrega</div>
+                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
+                    </div>
+                    
+                    <div class="indicator-card critical">
+                        <div class="indicator-value">22%</div>
+                        <div class="indicator-title">Atrasos/Prazos</div>
+                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
+                    </div>
+                    
+                    <div class="indicator-card warning">
+                        <div class="indicator-value">17%</div>
+                        <div class="indicator-title">Financeiro/Contratual</div>
+                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
+                    </div>
+                    
+                    <div class="indicator-card success">
+                        <div class="indicator-value">9%</div>
+                        <div class="indicator-title">Gestão/Atendimento</div>
+                        <span class="indicator-criticity criticity-low">🟢 Baixa criticidade</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plano de Ação -->
+            <div class="action-plan">
+                <h2><i class="fas fa-bullseye"></i> Plano de Ação Estratégico</h2>
+                <div class="action-timeline">
+                    <div class="timeline-item">
+                        <h4>🚨 Ações Imediatas (0-30 dias)</h4>
+                        <ul>
+                            <li>Criar força-tarefa para negativações indevidas</li>
+                            <li>Implementar protocolo de emergência financeira</li>
+                            <li>Estabelecer SLA de 24h para primeira resposta</li>
+                            <li>Auditoria urgente nos empreendimentos críticos</li>
+                            <li>Treinamento intensivo da equipe de atendimento</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>⚡ Ações de Médio Prazo (30-90 dias)</h4>
+                        <ul>
+                            <li>Revisar processo de distrato e cobrança</li>
+                            <li>Implementar sistema CRM integrado</li>
+                            <li>Melhorar comunicação com CEF e parceiros</li>
+                            <li>Criar processo de escalação automatizado</li>
+                            <li>Implementar pesquisa de satisfação</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>🔄 Ações de Longo Prazo (90+ dias)</h4>
+                        <ul>
+                            <li>Revisar parcerias com correspondentes</li>
+                            <li>Desenvolver programa de fidelização</li>
+                            <li>Implementar protocolo de transparência</li>
+                            <li>Criar centro de excelência em atendimento</li>
+                            <li>Desenvolver dashboard de monitoramento</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conteúdo da Diagonal Engenharia -->
+        <div id="diagonal-content" class="tab-content">
+            <!-- KPIs Principais -->
+            <div class="kpi-grid">
+                <div class="kpi-card critical">
+                    <div class="kpi-number">46</div>
+                    <div class="kpi-label">Total de Reclamações</div>
+                    <div class="kpi-trend trend-up">↗ Concentração em poucos projetos</div>
+                </div>
+                
+                <div class="kpi-card warning">
+                    <div class="kpi-number">28%</div>
+                    <div class="kpi-label">Problemas de Obra</div>
+                    <div class="kpi-trend">→ Maior categoria</div>
                 </div>
                 
                 <div class="kpi-card info">
                     <div class="kpi-number">11</div>
                     <div class="kpi-label">Empreendimentos Afetados</div>
-                    <div class="kpi-trend">Problemas identificados</div>
+                    <div class="kpi-trend">→ Distribuição desigual</div>
                 </div>
                 
                 <div class="kpi-card critical">
-                    <div class="kpi-number">34</div>
-                    <div class="kpi-label">Pico em Maio 2025</div>
-                    <div class="kpi-trend trend-up">↗ Máximo histórico</div>
+                    <div class="kpi-number">26%</div>
+                    <div class="kpi-label">Fortim Eco Village</div>
+                    <div class="kpi-trend">→ Projeto mais crítico</div>
                 </div>
             </div>
-            
-            <div class="alert-grid">
-                <div class="alert-card">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div>11 casos críticos em Fortim Eco Village (Diagonal)</div>
-                </div>
-                <div class="alert-card">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div>Vazamento crônico há 1 ano no Icon Condominium</div>
-                </div>
-                <div class="alert-card">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div>6 reclamações no Mirante Condomínio Clube (Victa)</div>
-                </div>
-                <div class="alert-card">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div>Escalada de insatisfação em maio 2025</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Quantitative Section -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-chart-bar"></i>
-                    Panorama Quantitativo
+            <!-- Análise Temporal -->
+            <div class="section">
+                <h2><i class="fas fa-chart-line"></i> Evolução Temporal das Reclamações</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">Reclamações por Mês</div>
+                        <canvas id="diagonal-temporalChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Distribuição por Categoria</div>
+                        <canvas id="diagonal-categoriaChart"></canvas>
+                    </div>
                 </div>
             </div>
-            
-            <h3 style="margin-bottom: 1rem; color: var(--dark);">Performance por Empresa</h3>
-            <table class="performance-table">
-                <thead>
-                    <tr>
-                        <th>Empresa</th>
-                        <th>Atendimentos</th>
-                        <th>Reclamações</th>
-                        <th>% Reclamações</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Victa Engenharia</td>
-                        <td>3.336</td>
-                        <td>95</td>
-                        <td>2,85%</td>
-                        <td><span class="status-indicator status-ok">✅ Dentro do padrão</span></td>
-                    </tr>
-                    <tr>
-                        <td>Diagonal Engenharia</td>
-                        <td>982</td>
-                        <td>52</td>
-                        <td>5,30%</td>
-                        <td><span class="status-indicator status-warning">⚠️ Acima da meta</span></td>
-                    </tr>
-                    <tr style="font-weight: 600; background-color: #eff6ff;">
-                        <td>CONSOLIDADO</td>
-                        <td>4.318</td>
-                        <td>147</td>
-                        <td>3,40%</td>
-                        <td><span class="status-indicator status-alert">⚠️ Atenção necessária</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="charts-grid">
-                <div class="chart-container">
-                    <div class="chart-title">
-                        <i class="fas fa-chart-line"></i>
-                        Evolução Temporal das Reclamações
-                    </div>
-                    <canvas id="temporalChart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <div class="chart-title">
-                        <i class="fas fa-chart-pie"></i>
-                        Distribuição por Categoria
-                    </div>
-                    <canvas id="categoriaChart"></canvas>
-                </div>
-            </div>
-        </div>
 
-        <!-- Qualitative Analysis - Diagonal Engenharia -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-clipboard-list"></i>
-                    Análise Qualitativa - Diagonal Engenharia
-                </div>
-            </div>
-            
-            <div class="section-subtitle">
-                <i class="fas fa-info-circle"></i>
-                Total de Reclamações Analisadas: 46 casos | Empreendimentos Envolvidos: 11
-            </div>
-            
-            <div class="criticity-grid">
-                <div class="criticity-card criticity-critical">
-                    <div class="criticity-header">
-                        <i class="fas fa-exclamation-circle"></i>
-                        CRÍTICO (5+ reclamações)
-                    </div>
-                    <ul class="problem-list">
+            <!-- Empreendimentos com maior volume -->
+            <div class="section">
+                <h2><i class="fas fa-building"></i> Empreendimentos com Maior Volume de Reclamações</h2>
+                
+                <div class="insight-card" style="margin-bottom: 1.5rem; border-left: 4px solid #ef4444;">
+                    <h3 style="color: #ef4444;">🔴 CRÍTICO (5+ reclamações)</h3>
+                    <ul class="insight-list">
                         <li><strong>FORTIM ECO VILLAGE</strong> - 12 reclamações</li>
                         <li><strong>LEGACY CONDOMINIUM</strong> - 6 reclamações</li>
                         <li><strong>CONNECT BEIRA MAR</strong> - 5 reclamações</li>
@@ -952,22 +705,16 @@
                     </ul>
                 </div>
                 
-                <div class="criticity-card criticity-moderate">
-                    <div class="criticity-header">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        MODERADO (3-4 reclamações)
-                    </div>
-                    <ul class="problem-list">
+                <div class="insight-card" style="margin-bottom: 1.5rem; border-left: 4px solid #f59e0b;">
+                    <h3 style="color: #f59e0b;">🟡 MODERADO (3-4 reclamações)</h3>
+                    <ul class="insight-list">
                         <li><strong>ICON CONDOMINIUM</strong> - 3 reclamações</li>
                     </ul>
                 </div>
                 
-                <div class="criticity-card criticity-low">
-                    <div class="criticity-header">
-                        <i class="fas fa-check-circle"></i>
-                        BAIXO (1-2 reclamações)
-                    </div>
-                    <ul class="problem-list">
+                <div class="insight-card" style="border-left: 4px solid #10b981;">
+                    <h3 style="color: #10b981;">🟢 BAIXO (1-2 reclamações)</h3>
+                    <ul class="insight-list">
                         <li><strong>DIAGONAL BY PININFARINA</strong> - 2 reclamações</li>
                         <li><strong>EPIC CONDOMINIUM</strong> - 2 reclamações</li>
                         <li><strong>PRAÇA DA LUZ</strong> - 2 reclamações</li>
@@ -977,323 +724,323 @@
                     </ul>
                 </div>
             </div>
-            
-            <!-- Performance Indicators Section - DIAGONAL -->
-            <div class="performance-section">
-                <h3><i class="fas fa-chart-line"></i> Indicadores de Performance - Diagonal Engenharia</h3>
+
+            <!-- Categorização por tipo de problema -->
+            <div class="section">
+                <h2><i class="fas fa-list"></i> Categorização por Tipo de Problema</h2>
                 
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h3>🏗️ Problemas de Obra e Construção (28%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Poluição sonora excessiva</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Queda de materiais e problemas de segurança</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Proliferação de insetos e poeira</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Entupimento de calhas com concreto</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>🏠 Problemas Técnicos Pós-Entrega (24%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Vazamentos em esquadrias e bancadas</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Problemas no sistema de aquecimento solar</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Infiltrações recorrentes</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Danos estruturais não resolvidos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>⏰ Atrasos e Prazos (22%)</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Atrasos significativos na entrega</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Postergação de assembleias sem consulta</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Falta de transparência nos cronogramas</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Impacto financeiro nos compradores</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Indicadores de Performance -->
+            <div class="section">
+                <h2><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h2>
                 <div class="performance-indicators">
-                    <div class="indicator-card">
-                        <div class="indicator-header">
-                            <div class="indicator-title">Obra/Construção</div>
-                            <div class="indicator-value indicator-critical">13 casos</div>
-                        </div>
-                        <div class="kpi-trend">28% do total de reclamações</div>
-                        <div class="indicator-footer">
-                            <span class="criticidade-indicator criticidade-high">
-                                <i class="fas fa-exclamation-circle"></i> Alta criticidade
-                            </span>
-                        </div>
+                    <div class="indicator-card critical">
+                        <div class="indicator-value">13</div>
+                        <div class="indicator-title">Obra/Construção</div>
+                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
                     </div>
                     
-                    <div class="indicator-card">
-                        <div class="indicator-header">
-                            <div class="indicator-title">Técnicos Pós-Entrega</div>
-                            <div class="indicator-value indicator-warning">11 casos</div>
-                        </div>
-                        <div class="kpi-trend">24% do total de reclamações</div>
-                        <div class="indicator-footer">
-                            <span class="criticidade-indicator criticidade-medium">
-                                <i class="fas fa-exclamation-triangle"></i> Média criticidade
-                            </span>
-                        </div>
+                    <div class="indicator-card warning">
+                        <div class="indicator-value">11</div>
+                        <div class="indicator-title">Técnicos Pós-Entrega</div>
+                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
                     </div>
                     
-                    <div class="indicator-card">
-                        <div class="indicator-header">
-                            <div class="indicator-title">Atrasos/Prazos</div>
-                            <div class="indicator-value indicator-critical">10 casos</div>
-                        </div>
-                        <div class="kpi-trend">22% do total de reclamações</div>
-                        <div class="indicator-footer">
-                            <span class="criticidade-indicator criticidade-high">
-                                <i class="fas fa-exclamation-circle"></i> Alta criticidade
-                            </span>
-                        </div>
+                    <div class="indicator-card critical">
+                        <div class="indicator-value">10</div>
+                        <div class="indicator-title">Atrasos/Prazos</div>
+                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
                     </div>
                     
-                    <div class="indicator-card">
-                        <div class="indicator-header">
-                            <div class="indicator-title">Financeiro/Contratual</div>
-                            <div class="indicator-value indicator-warning">8 casos</div>
-                        </div>
-                        <div class="kpi-trend">17% do total de reclamações</div>
-                        <div class="indicator-footer">
-                            <span class="criticidade-indicator criticidade-medium">
-                                <i class="fas fa-exclamation-triangle"></i> Média criticidade
-                            </span>
-                        </div>
+                    <div class="indicator-card warning">
+                        <div class="indicator-value">8</div>
+                        <div class="indicator-title">Financeiro/Contratual</div>
+                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
                     </div>
                     
-                    <div class="indicator-card">
-                        <div class="indicator-header">
-                            <div class="indicator-title">Gestão/Atendimento</div>
-                            <div class="indicator-value indicator-success">4 casos</div>
-                        </div>
-                        <div class="kpi-trend">9% do total de reclamações</div>
-                        <div class="indicator-footer">
-                            <span class="criticidade-indicator criticidade-low">
-                                <i class="fas fa-check-circle"></i> Baixa criticidade
-                            </span>
-                        </div>
+                    <div class="indicator-card success">
+                        <div class="indicator-value">4</div>
+                        <div class="indicator-title">Gestão/Atendimento</div>
+                        <span class="indicator-criticity criticity-low">🟢 Baixa criticidade</span>
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 2rem; margin-top: 2rem;">
-                    <div style="flex: 1; background: rgba(239, 68, 68, 0.08); padding: 1.5rem; border-radius: 10px;">
-                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--critical);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+                    <div style="background: rgba(239, 68, 68, 0.08); padding: 1.5rem; border-radius: 10px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #ef4444;">
                             <i class="fas fa-sync-alt"></i> Taxa de Recorrência
                         </div>
-                        <div class="kpi-number" style="color: var(--critical);">35%</div>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: #ef4444;">35%</div>
                         <div>Problemas recorrentes não resolvidos</div>
                     </div>
                     
-                    <div style="flex: 1; background: rgba(245, 158, 11, 0.08); padding: 1.5rem; border-radius: 10px;">
-                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--warning);">
+                    <div style="background: rgba(245, 158, 11, 0.08); padding: 1.5rem; border-radius: 10px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #f59e0b;">
                             <i class="fas fa-smile"></i> Satisfação do Cliente
                         </div>
-                        <div class="kpi-number" style="color: var(--warning);">40%</div>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: #f59e0b;">40%</div>
                         <div>Baseada nos feedbacks recebidos</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="qualitative-grid">
-                <div class="qualitative-card">
-                    <h3><i class="fas fa-hard-hat"></i> Problemas de Obra e Construção</h3>
-                    <div class="kpi-number" style="color: var(--critical);">28% (13 casos)</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>DIAGONAL BY PININFARINA:</strong> Poluição sonora, equipamentos obsoletos</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>CONNECT BEIRA MAR:</strong> Queda de materiais, problemas de segurança</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>EDGE CONDOMINIUM:</strong> Insetos, poeira, barulho excessivo</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>EPIC CONDOMINIUM:</strong> Entupimento de calhas com concreto</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="qualitative-card">
-                    <h3><i class="fas fa-tools"></i> Problemas Técnicos Pós-Entrega</h3>
-                    <div class="kpi-number" style="color: var(--warning);">24% (11 casos)</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>ICON CONDOMINIUM:</strong> Vazamentos recorrentes em esquadrias e bancadas</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>LEGACY CONDOMINIUM:</strong> Problemas no sistema de aquecimento solar</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>PRISMA RESIDENCIAL CLUBE:</strong> Infiltrações recorrentes e danos a veículos</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="qualitative-card">
-                    <h3><i class="fas fa-clock"></i> Atrasos e Prazos</h3>
-                    <div class="kpi-number" style="color: var(--warning);">22% (10 casos)</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>FORTIM ECO VILLAGE:</strong> Múltiplos atrasos na entrega</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>CONNECT BEIRA MAR:</strong> Obra 45% com prazo final se aproximando</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Postergação de assembleias sem consulta prévia</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Falta de transparência nos cronogramas de obra</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="qualitative-card">
-                    <h3><i class="fas fa-file-contract"></i> Questões Financeiras e Contratuais</h3>
-                    <div class="kpi-number" style="color: var(--warning);">17% (8 casos)</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>CONNECT BEIRA MAR:</strong> Cotas adicionais e dificuldades para distrato</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>EDGE CONDOMINIUM:</strong> Mudanças unilaterais no acabamento</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span><strong>IVENS MONUMENTAL:</strong> Problemas com parcerias comerciais</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
-
-        <!-- Recommendations -->
-        <div class="action-plan">
-            <h2><i class="fas fa-bullseye"></i> Plano de Ação Estratégico</h2>
-            
-            <div class="action-timeline">
-                <div class="timeline-item">
-                    <h4><i class="fas fa-bolt"></i> Ações Imediatas (0-30 dias)</h4>
-                    <ul>
-                        <li>Implementar medidas de controle de ruído no DIAGONAL BY PININFARINA</li>
-                        <li>Reforçar segurança no CONNECT BEIRA MAR</li>
-                        <li>Resolver questão de numeração no FORTIM ECO VILLAGE</li>
-                        <li>Criar força-tarefa para problemas recorrentes</li>
-                        <li>Comunicação proativa com clientes afetados</li>
-                    </ul>
+        
+        <!-- Visão Consolidada -->
+        <div id="consolidado-content" class="tab-content">
+            <div class="section">
+                <h2><i class="fas fa-chart-pie"></i> Visão Consolidada - Victa & Diagonal</h2>
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card critical">
+                        <div class="kpi-number">152</div>
+                        <div class="kpi-label">Total de Reclamações</div>
+                        <div class="kpi-trend">↗ Combinadas</div>
+                    </div>
+                    
+                    <div class="kpi-card warning">
+                        <div class="kpi-number">3.4%</div>
+                        <div class="kpi-label">Taxa de Reclamações</div>
+                        <div class="kpi-trend">↗ Em relação aos atendimentos</div>
+                    </div>
+                    
+                    <div class="kpi-card info">
+                        <div class="kpi-number">26</div>
+                        <div class="kpi-label">Empreendimentos Afetados</div>
+                        <div class="kpi-trend">→ Combinados</div>
+                    </div>
+                    
+                    <div class="kpi-card critical">
+                        <div class="kpi-number">34</div>
+                        <div class="kpi-label">Pico em Maio 2025</div>
+                        <div class="kpi-trend trend-up">↗ Máximo histórico</div>
+                    </div>
                 </div>
                 
-                <div class="timeline-item">
-                    <h4><i class="fas fa-cogs"></i> Ações de Curto Prazo (30-90 dias)</h4>
-                    <ul>
-                        <li>Revisar processos de assistência técnica</li>
-                        <li>Implementar comunicação proativa sobre atrasos</li>
-                        <li>Criar protocolo de relacionamento com vizinhança</li>
-                        <li>Treinamento de equipes técnicas e comerciais</li>
-                        <li>Implementar sistema de alertas</li>
-                    </ul>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">Reclamações por Empresa</div>
+                        <canvas id="consolidado-empresaChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Distribuição por Categoria Consolidada</div>
+                        <canvas id="consolidado-categoriaChart"></canvas>
+                    </div>
                 </div>
                 
-                <div class="timeline-item">
-                    <h4><i class="fas fa-chart-line"></i> Ações de Médio Prazo (90-180 dias)</h4>
-                    <ul>
-                        <li>Reestruturar sistema de atendimento ao cliente</li>
-                        <li>Implementar gestão de expectativas desde a venda</li>
-                        <li>Criar comitê de qualidade para obras</li>
-                        <li>Revisar parcerias com fornecedores</li>
-                        <li>Implementar programa de prevenção de problemas</li>
-                    </ul>
+                <div class="insights-grid" style="margin-top: 2rem;">
+                    <div class="insight-card">
+                        <h3>Principais Desafios Combinados</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Problemas financeiros (Victa) e de obra (Diagonal)</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Atrasos em projetos de ambas as empresas</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Comunicação deficiente com clientes</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Problemas técnicos pós-entrega</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h3>Oportunidades de Melhoria</h3>
+                        <ul class="insight-list">
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Padronização de processos de atendimento</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-high"></div>
+                                <span>Implementação de sistema de gestão unificado</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Treinamento integrado de equipes</span>
+                            </li>
+                            <li>
+                                <div class="priority-indicator priority-medium"></div>
+                                <span>Compartilhamento de melhores práticas</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h3><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h3>
-                    <ul class="kpi-list">
-                        <li>
-                            <span>Volume de reclamações/empreendimento</span>
-                            <span class="kpi-value">Meta: &lt;3/mês</span>
-                        </li>
-                        <li>
-                            <span>Tempo médio de resolução</span>
-                            <span class="kpi-value">Meta: &lt;15 dias</span>
-                        </li>
-                        <li>
-                            <span>Reclamações Engenharia/Obra</span>
-                            <span class="kpi-value">Meta: -50%</span>
-                        </li>
-                        <li>
-                            <span>Taxa de reincidência</span>
-                            <span class="kpi-value">Meta: &lt;5%</span>
-                        </li>
-                        <li>
-                            <span>Satisfação pós-resolução</span>
-                            <span class="kpi-value">Meta: &gt;90%</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-file-invoice-dollar"></i> Impacto Financeiro Estimado</h3>
-                    <ul class="kpi-list">
-                        <li>
-                            <span>Retrabalhos em obra</span>
-                            <span class="kpi-value">R$ 150-300k</span>
-                        </li>
-                        <li>
-                            <span>Questões jurídicas</span>
-                            <span class="kpi-value">R$ 200-500k</span>
-                        </li>
-                        <li>
-                            <span>Assistência técnica</span>
-                            <span class="kpi-value">R$ 50-100k</span>
-                        </li>
-                        <li>
-                            <span>Perda de reputação</span>
-                            <span class="kpi-value">Alto impacto</span>
-                        </li>
-                        <li>
-                            <span>Atraso em entregas</span>
-                            <span class="kpi-value">Multas contratuais</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="conclusion">
-                <h3><i class="fas fa-check-circle"></i> Conclusões e Próximos Passos</h3>
-                <ul class="conclusion-list">
-                    <li>Concentração de risco no Fortim Eco Village exige ação imediata</li>
-                    <li>Problemas de engenharia são sistêmicos e afetam múltiplos projetos</li>
-                    <li>Questões jurídicas no Legacy podem gerar passivos significativos</li>
-                    <li>Necessidade urgente de protocolos de qualidade e prevenção</li>
-                    <li>Poluição sonora em Diagonal by Pininfarina requer solução emergencial</li>
-                </ul>
             </div>
         </div>
     </div>
 
     <script>
-        // Dados para os gráficos
+        // Dados para Victa
         const temporalData = {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
             datasets: [{
-                label: 'Reclamações',
-                data: [16, 14, 18, 22, 34, 12],
-                backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                borderColor: '#ef4444',
+                label: 'Reclamações por Mês',
+                data: [10, 8, 12, 28, 20, 28],
+                backgroundColor: '#ef4444',
+                borderColor: '#dc2626',
                 borderWidth: 3,
                 fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#ef4444',
-                pointBorderWidth: 2,
-                pointRadius: 5
+                tension: 0.4
             }]
         };
 
         const categoriaData = {
-            labels: ['Engenharia/Obra', 'Jurídico', 'Assistência Técnica', 'Financeiro', 'Experiência', 'Incorporação', 'Comercial/Vendas'],
+            labels: ['Assistência Técnica', 'Comercial/Vendas', 'Financeiro', 'Financiamento', 'Experiência', 'Eng./Obra', 'Jurídico'],
             datasets: [{
-                data: [45.2, 23.8, 11.9, 7.1, 4.8, 4.8, 2.4],
+                data: [32, 29, 25, 15, 6, 4, 1],
                 backgroundColor: [
                     '#ef4444', '#dc2626', '#f59e0b', '#3b82f6', 
                     '#10b981', '#8b5cf6', '#06b6d4'
+                ],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        };
+
+        const empreendimentoData = {
+            labels: [
+                'Mirante Condomínio Clube',
+                'Jóquei Condomínio Clube',
+                'Belvedere Condomínio Clube',
+                'Alta Vista Passare',
+                'Vista Mar Condomínio Clube',
+                'Vitória Mondubim',
+                'Vista Parque Condomínio Clube',
+                'Vitória Senna',
+                'Vitória Acácia',
+                'Vitória Caucaia',
+                'Outros'
+            ],
+            datasets: [{
+                label: 'Reclamações por Empreendimento',
+                data: [20, 16, 11, 10, 11, 6, 2, 4, 1, 3, 22],
+                backgroundColor: [
+                    '#ef4444', '#dc2626', '#b91c1c', '#f59e0b', '#d97706',
+                    '#3b82f6', '#2563eb', '#10b981', '#059669', '#0d9488', '#64748b'
+                ],
+                borderColor: '#ffffff',
+                borderWidth: 2
+            }]
+        };
+
+        // Dados para Diagonal
+        const diagonalTemporalData = {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+            datasets: [{
+                label: 'Reclamações por Mês',
+                data: [5, 7, 8, 12, 10, 4],
+                backgroundColor: '#8b5cf6',
+                borderColor: '#7c3aed',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        const diagonalCategoriaData = {
+            labels: ['Obra/Construção', 'Técnicos Pós-Entrega', 'Atrasos/Prazos', 'Financeiro/Contratual', 'Gestão/Atendimento'],
+            datasets: [{
+                data: [13, 11, 10, 8, 4],
+                backgroundColor: [
+                    '#ef4444', '#f59e0b', '#dc2626', '#3b82f6', '#10b981'
+                ],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        };
+
+        // Dados Consolidados
+        const consolidadoEmpresaData = {
+            labels: ['Victa Engenharia', 'Diagonal Engenharia'],
+            datasets: [{
+                data: [106, 46],
+                backgroundColor: ['#3b82f6', '#8b5cf6'],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        };
+
+        const consolidadoCategoriaData = {
+            labels: ['Obra/Construção', 'Técnicos Pós-Entrega', 'Financeiro', 'Atrasos/Prazos', 'Comercial/Vendas', 'Outros'],
+            datasets: [{
+                data: [41, 35, 33, 32, 29, 15],
+                backgroundColor: [
+                    '#ef4444', '#f59e0b', '#3b82f6', '#dc2626', '#10b981', '#8b5cf6'
                 ],
                 borderWidth: 2,
                 borderColor: '#ffffff'
@@ -1311,27 +1058,15 @@
                         padding: 20,
                         font: {
                             size: 11
-                        },
-                        usePointStyle: true,
-                        pointStyle: 'circle'
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
-                    padding: 12,
-                    titleFont: {
-                        size: 14
-                    },
-                    bodyFont: {
-                        size: 13
+                        }
                     }
                 }
             }
         };
 
-        // Criar gráficos após o carregamento da página
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gráfico Temporal
+        // Criar gráficos
+        window.addEventListener('load', function() {
+            // Gráficos Victa
             new Chart(document.getElementById('temporalChart'), {
                 type: 'line',
                 data: temporalData,
@@ -1341,10 +1076,7 @@
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(241, 245, 249, 0.8)'
-                            },
-                            ticks: {
-                                precision: 0
+                                color: '#f1f5f9'
                             }
                         },
                         x: {
@@ -1356,20 +1088,95 @@
                 }
             });
 
-            // Gráfico de Categoria
             new Chart(document.getElementById('categoriaChart'), {
                 type: 'doughnut',
                 data: categoriaData,
+                options: chartOptions
+            });
+
+            new Chart(document.getElementById('empreendimentoChart'), {
+                type: 'bar',
+                data: empreendimentoData,
                 options: {
                     ...chartOptions,
-                    cutout: '65%',
-                    plugins: {
-                        legend: {
-                            ...chartOptions.plugins.legend,
-                            position: 'right'
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
                         }
                     }
                 }
+            });
+
+            // Gráficos Diagonal
+            new Chart(document.getElementById('diagonal-temporalChart'), {
+                type: 'line',
+                data: diagonalTemporalData,
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('diagonal-categoriaChart'), {
+                type: 'doughnut',
+                data: diagonalCategoriaData,
+                options: chartOptions
+            });
+
+            // Gráficos Consolidados
+            new Chart(document.getElementById('consolidado-empresaChart'), {
+                type: 'pie',
+                data: consolidadoEmpresaData,
+                options: chartOptions
+            });
+
+            new Chart(document.getElementById('consolidado-categoriaChart'), {
+                type: 'doughnut',
+                data: consolidadoCategoriaData,
+                options: chartOptions
+            });
+        });
+
+        // Sistema de abas
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover classe active de todos os botões
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Adicionar classe active ao botão clicado
+                button.classList.add('active');
+                
+                // Esconder todos os conteúdos
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Mostrar o conteúdo correspondente
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
             });
         });
     </script>
