@@ -15,6 +15,8 @@
             --success: #10b981;
             --dark: #1e293b;
             --light: #f8fafc;
+            --diagonal: #8b5cf6;
+            --victa: #06b6d4;
         }
         
         * {
@@ -83,6 +85,31 @@
             justify-content: center;
             font-size: 28px;
             backdrop-filter: blur(10px);
+        }
+        
+        .company-tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .company-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .victa-tag {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--victa);
+            border: 1px solid var(--victa);
+        }
+        
+        .diagonal-tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--diagonal);
+            border: 1px solid var(--diagonal);
         }
         
         .header-title h1 {
@@ -252,6 +279,16 @@
             gap: 10px;
         }
         
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 35px;
+        }
+        
         .performance-table {
             width: 100%;
             border-collapse: collapse;
@@ -333,21 +370,23 @@
             gap: 8px;
         }
         
-        /* Strategic Analysis */
-        .analysis-grid {
+        /* Qualitative Analysis */
+        .qualitative-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            margin-top: 1.5rem;
         }
         
-        .analysis-card {
+        .qualitative-card {
             background: white;
             border-radius: 12px;
             padding: 1.8rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--diagonal);
         }
         
-        .analysis-card h3 {
+        .qualitative-card h3 {
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
@@ -356,23 +395,7 @@
             align-items: center;
             gap: 10px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--secondary);
-        }
-        
-        .insight-list {
-            list-style: none;
-        }
-        
-        .insight-list li {
-            padding: 0.9rem 0;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-        
-        .insight-list li:last-child {
-            border-bottom: none;
+            border-bottom: 2px solid var(--diagonal);
         }
         
         .priority-indicator {
@@ -393,6 +416,87 @@
         
         .priority-low {
             background: var(--success);
+        }
+        
+        .insight-list {
+            list-style: none;
+        }
+        
+        .insight-list li {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .criticity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .criticity-card {
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+        
+        .criticity-critical {
+            border: 2px solid var(--critical);
+        }
+        
+        .criticity-moderate {
+            border: 2px solid var(--warning);
+        }
+        
+        .criticity-low {
+            border: 2px solid var(--success);
+        }
+        
+        .criticity-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .criticity-critical .criticity-header {
+            color: var(--critical);
+        }
+        
+        .criticity-moderate .criticity-header {
+            color: var(--warning);
+        }
+        
+        .criticity-low .criticity-header {
+            color: var(--success);
+        }
+        
+        .problem-list {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+        
+        .problem-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.7rem;
+        }
+        
+        .problem-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            line-height: 1;
         }
         
         /* Recommendations */
@@ -536,7 +640,7 @@
                 font-size: 2.2rem;
             }
             
-            .charts-grid {
+            .charts-grid, .qualitative-grid, .criticity-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -579,6 +683,10 @@
                     <div>
                         <h3>Victa & Diagonal Engenharia</h3>
                         <p>Relatório Executivo Estratégico</p>
+                        <div class="company-tags">
+                            <span class="company-tag victa-tag">Victa Engenharia</span>
+                            <span class="company-tag diagonal-tag">Diagonal Engenharia</span>
+                        </div>
                     </div>
                 </div>
                 <div class="period-info">
@@ -717,80 +825,267 @@
             </div>
         </div>
 
-        <!-- Strategic Analysis -->
+        <!-- Qualitative Analysis - Diagonal Engenharia -->
         <div class="section">
             <div class="section-header">
                 <div class="section-title">
-                    <i class="fas fa-search"></i>
-                    Análise Estratégica
+                    <i class="fas fa-clipboard-list"></i>
+                    Análise Qualitativa - Diagonal Engenharia
                 </div>
             </div>
             
-            <div class="analysis-grid">
-                <div class="analysis-card">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Situações Críticas</h3>
+            <div class="section-subtitle">
+                <i class="fas fa-info-circle"></i>
+                Total de Reclamações Analisadas: 46 casos | Empreendimentos Envolvidos: 11
+            </div>
+            
+            <div class="criticity-grid">
+                <div class="criticity-card criticity-critical">
+                    <div class="criticity-header">
+                        <i class="fas fa-exclamation-circle"></i>
+                        CRÍTICO (5+ reclamações)
+                    </div>
+                    <ul class="problem-list">
+                        <li><strong>FORTIM ECO VILLAGE</strong> - 12 reclamações</li>
+                        <li><strong>LEGACY CONDOMINIUM</strong> - 6 reclamações</li>
+                        <li><strong>CONNECT BEIRA MAR</strong> - 5 reclamações</li>
+                        <li><strong>EDGE CONDOMINIUM</strong> - 5 reclamações</li>
+                    </ul>
+                </div>
+                
+                <div class="criticity-card criticity-moderate">
+                    <div class="criticity-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        MODERADO (3-4 reclamações)
+                    </div>
+                    <ul class="problem-list">
+                        <li><strong>ICON CONDOMINIUM</strong> - 3 reclamações</li>
+                    </ul>
+                </div>
+                
+                <div class="criticity-card criticity-low">
+                    <div class="criticity-header">
+                        <i class="fas fa-check-circle"></i>
+                        BAIXO (1-2 reclamações)
+                    </div>
+                    <ul class="problem-list">
+                        <li><strong>DIAGONAL BY PININFARINA</strong> - 2 reclamações</li>
+                        <li><strong>EPIC CONDOMINIUM</strong> - 2 reclamações</li>
+                        <li><strong>PRAÇA DA LUZ</strong> - 2 reclamações</li>
+                        <li><strong>IVENS MONUMENTAL</strong> - 1 reclamação</li>
+                        <li><strong>OCEAN GARDEN</strong> - 1 reclamação</li>
+                        <li><strong>PRISMA RESIDENCIAL CLUBE</strong> - 2 reclamações</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="qualitative-grid">
+                <div class="qualitative-card">
+                    <h3><i class="fas fa-hard-hat"></i> Problemas de Obra e Construção</h3>
+                    <div class="kpi-number" style="color: var(--critical);">28% (13 casos)</div>
+                    
                     <ul class="insight-list">
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span><strong>Fortim Eco Village:</strong> 26,2% de todas as reclamações (11 registros)</span>
+                            <span><strong>DIAGONAL BY PININFARINA:</strong> Poluição sonora, equipamentos obsoletos</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span><strong>Problemas de Engenharia/Obra:</strong> 45,2% de todas as reclamações</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>Legacy Condominium:</strong> 83% das reclamações são questões jurídicas</span>
+                            <span><strong>CONNECT BEIRA MAR:</strong> Queda de materiais, problemas de segurança</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-medium"></div>
-                            <span><strong>Icon Condominium:</strong> Vazamento crônico há 1 ano sem solução</span>
+                            <span><strong>EDGE CONDOMINIUM:</strong> Insetos, poeira, barulho excessivo</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span><strong>EPIC CONDOMINIUM:</strong> Entupimento de calhas com concreto</span>
                         </li>
                     </ul>
                 </div>
                 
-                <div class="analysis-card">
-                    <h3><i class="fas fa-layer-group"></i> Análise por Categorias</h3>
+                <div class="qualitative-card">
+                    <h3><i class="fas fa-tools"></i> Problemas Técnicos Pós-Entrega</h3>
+                    <div class="kpi-number" style="color: var(--warning);">24% (11 casos)</div>
+                    
                     <ul class="insight-list">
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span><strong>Engenharia/Obra:</strong> 45,2% (19 registros) - CRÍTICO</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span><strong>Jurídico:</strong> 23,8% (10 registros) - ALTO RISCO</span>
+                            <span><strong>ICON CONDOMINIUM:</strong> Vazamentos recorrentes em esquadrias e bancadas</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-medium"></div>
-                            <span><strong>Assistência Técnica:</strong> 11,9% (5 registros)</span>
+                            <span><strong>LEGACY CONDOMINIUM:</strong> Problemas no sistema de aquecimento solar</span>
                         </li>
                         <li>
-                            <div class="priority-indicator priority-low"></div>
-                            <span><strong>Financeiro:</strong> 7,1% (3 registros)</span>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span><strong>PRISMA RESIDENCIAL CLUBE:</strong> Infiltrações recorrentes e danos a veículos</span>
                         </li>
                     </ul>
                 </div>
                 
-                <div class="analysis-card">
-                    <h3><i class="fas fa-building"></i> Empreendimentos em Alerta</h3>
+                <div class="qualitative-card">
+                    <h3><i class="fas fa-clock"></i> Atrasos e Prazos</h3>
+                    <div class="kpi-number" style="color: var(--warning);">22% (10 casos)</div>
+                    
                     <ul class="insight-list">
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span><strong>Crítico:</strong> Fortim Eco Village (11 casos)</span>
+                            <span><strong>FORTIM ECO VILLAGE:</strong> Múltiplos atrasos na entrega</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-high"></div>
-                            <span><strong>Alto:</strong> Legacy Condominium (6 casos)</span>
+                            <span><strong>CONNECT BEIRA MAR:</strong> Obra 45% com prazo final se aproximando</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-medium"></div>
-                            <span><strong>Médio:</strong> Connect Beira Mar (4 casos)</span>
+                            <span>Postergação de assembleias sem consulta prévia</span>
                         </li>
                         <li>
                             <div class="priority-indicator priority-medium"></div>
-                            <span><strong>Médio:</strong> Edge Condominium (5 casos)</span>
+                            <span>Falta de transparência nos cronogramas de obra</span>
                         </li>
                     </ul>
+                </div>
+                
+                <div class="qualitative-card">
+                    <h3><i class="fas fa-file-contract"></i> Questões Financeiras e Contratuais</h3>
+                    <div class="kpi-number" style="color: var(--warning);">17% (8 casos)</div>
+                    
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span><strong>CONNECT BEIRA MAR:</strong> Cotas adicionais e dificuldades para distrato</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span><strong>EDGE CONDOMINIUM:</strong> Mudanças unilaterais no acabamento</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span><strong>IVENS MONUMENTAL:</strong> Problemas com parcerias comerciais</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Problems Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Problemas Críticos Identificados
+                </div>
+            </div>
+            
+            <div class="qualitative-grid">
+                <div class="qualitative-card" style="border-left-color: var(--critical);">
+                    <h3 style="border-color: var(--critical);"><i class="fas fa-fire"></i> Fortim Eco Village</h3>
+                    <div class="kpi-number" style="color: var(--critical);">12 reclamações</div>
+                    
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Múltiplos atrasos na entrega</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Alteração não autorizada de numeração</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Postergação de assembleias sem consulta</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Ameaças de judicialização por clientes</span>
+                        </li>
+                    </ul>
+                    
+                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
+                        <strong>Ações Recomendadas:</strong> Revisão completa do cronograma, comunicação transparente com compradores, equipe dedicada para gestão de crise.
+                    </div>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: var(--critical);">
+                    <h3 style="border-color: var(--critical);"><i class="fas fa-volume-up"></i> Diagonal by Pininfarina</h3>
+                    <div class="kpi-number" style="color: var(--critical);">2 reclamações (Alto impacto)</div>
+                    
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Poluição sonora excessiva há 1 ano</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Equipamentos obsoletos e barulhentos</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Hóspedes internacionais se retirando do local</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Contaminação sonora do ambiente</span>
+                        </li>
+                    </ul>
+                    
+                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
+                        <strong>Ações Recomendadas:</strong> Substituição imediata de equipamentos, revisão de horários de obra, compensação a hóspedes afetados.
+                    </div>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: var(--critical);">
+                    <h3 style="border-color: var(--critical);"><i class="fas fa-hard-hat"></i> Connect Beira Mar</h3>
+                    <div class="kpi-number" style="color: var(--critical);">5 reclamações</div>
+                    
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Obra com apenas 45% com prazo vencendo</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Queda de materiais da obra</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-high"></div>
+                            <span>Risco de segurança pública</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Solicitações de distrato por parte de clientes</span>
+                        </li>
+                    </ul>
+                    
+                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
+                        <strong>Ações Recomendadas:</strong> Reforço de medidas de segurança, revisão realista do cronograma, transparência com compradores.
+                    </div>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: var(--warning);">
+                    <h3 style="border-color: var(--warning);"><i class="fas fa-tools"></i> Legacy Condominium</h3>
+                    <div class="kpi-number" style="color: var(--warning);">6 reclamações</div>
+                    
+                    <ul class="insight-list">
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Problemas técnicos recorrentes não resolvidos</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Insatisfação com assistência técnica</span>
+                        </li>
+                        <li>
+                            <div class="priority-indicator priority-medium"></div>
+                            <span>Dificuldade em resolver problemas estruturais</span>
+                        </li>
+                    </ul>
+                    
+                    <div style="background: rgba(245, 158, 11, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--warning);">
+                        <strong>Ações Recomendadas:</strong> Revisão dos processos de manutenção, criação de protocolo de atendimento técnico.
+                    </div>
                 </div>
             </div>
         </div>
@@ -803,33 +1098,33 @@
                 <div class="timeline-item">
                     <h4><i class="fas fa-bolt"></i> Ações Imediatas (0-30 dias)</h4>
                     <ul>
-                        <li>Intervenção no Fortim Eco Village com auditoria completa</li>
-                        <li>Revisão jurídica urgente no Legacy Condominium</li>
-                        <li>Padronização da assistência técnica</li>
-                        <li>Criação de força-tarefa multidisciplinar</li>
+                        <li>Implementar medidas de controle de ruído no DIAGONAL BY PININFARINA</li>
+                        <li>Reforçar segurança no CONNECT BEIRA MAR</li>
+                        <li>Resolver questão de numeração no FORTIM ECO VILLAGE</li>
+                        <li>Criar força-tarefa para problemas recorrentes</li>
                         <li>Comunicação proativa com clientes afetados</li>
                     </ul>
                 </div>
                 
                 <div class="timeline-item">
-                    <h4><i class="fas fa-cogs"></i> Ações Estruturais (30-90 dias)</h4>
+                    <h4><i class="fas fa-cogs"></i> Ações de Curto Prazo (30-90 dias)</h4>
                     <ul>
-                        <li>Implantação de sistema de qualidade em engenharia</li>
-                        <li>Fortalecimento jurídico preventivo</li>
-                        <li>Programa de gestão de reclamações</li>
+                        <li>Revisar processos de assistência técnica</li>
+                        <li>Implementar comunicação proativa sobre atrasos</li>
+                        <li>Criar protocolo de relacionamento com vizinhança</li>
                         <li>Treinamento de equipes técnicas e comerciais</li>
-                        <li>Implementação de sistema de alertas</li>
+                        <li>Implementar sistema de alertas</li>
                     </ul>
                 </div>
                 
                 <div class="timeline-item">
-                    <h4><i class="fas fa-chart-line"></i> Ações de Longo Prazo (90+ dias)</h4>
+                    <h4><i class="fas fa-chart-line"></i> Ações de Médio Prazo (90-180 dias)</h4>
                     <ul>
-                        <li>Programa de excelência operacional</li>
-                        <li>Certificação ISO 9001 para processos</li>
-                        <li>Desenvolvimento de experiência do cliente</li>
-                        <li>Programa de fidelização e relacionamento</li>
-                        <li>Implementação de canais digitais avançados</li>
+                        <li>Reestruturar sistema de atendimento ao cliente</li>
+                        <li>Implementar gestão de expectativas desde a venda</li>
+                        <li>Criar comitê de qualidade para obras</li>
+                        <li>Revisar parcerias com fornecedores</li>
+                        <li>Implementar programa de prevenção de problemas</li>
                     </ul>
                 </div>
             </div>
@@ -839,7 +1134,7 @@
         <div class="footer">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3><i class="fas fa-tachometer-alt"></i> Indicadores de Monitoramento</h3>
+                    <h3><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h3>
                     <ul class="kpi-list">
                         <li>
                             <span>Volume de reclamações/empreendimento</span>
@@ -898,6 +1193,7 @@
                     <li>Problemas de engenharia são sistêmicos e afetam múltiplos projetos</li>
                     <li>Questões jurídicas no Legacy podem gerar passivos significativos</li>
                     <li>Necessidade urgente de protocolos de qualidade e prevenção</li>
+                    <li>Poluição sonora em Diagonal by Pininfarina requer solução emergencial</li>
                 </ul>
             </div>
         </div>
