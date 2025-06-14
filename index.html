@@ -11,11 +11,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             color: #1e293b;
             line-height: 1.6;
         }
@@ -37,6 +37,8 @@
         .header .subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .tabs-container {
@@ -104,6 +106,11 @@
             border-left: 4px solid;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px);
         }
         
         .kpi-card::before {
@@ -154,6 +161,9 @@
         .kpi-trend {
             font-size: 0.9rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         
         .trend-up {
@@ -312,67 +322,42 @@
             color: #60a5fa;
         }
         
-        /* Performance Indicators */
-        .performance-indicators {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .indicator-card {
+        .comparison-section {
             background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 4px solid;
         }
         
-        .indicator-card.critical {
-            border-left-color: #ef4444;
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
         }
         
-        .indicator-card.warning {
-            border-left-color: #f59e0b;
+        .company-comparison {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: #f8fafc;
         }
         
-        .indicator-card.success {
-            border-left-color: #10b981;
+        .victa-comparison {
+            border-left: 4px solid #3b82f6;
         }
         
-        .indicator-value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+        .diagonal-comparison {
+            border-left: 4px solid #8b5cf6;
         }
         
-        .indicator-title {
-            font-size: 1rem;
-            color: #64748b;
-            margin-bottom: 0.5rem;
-        }
-        
-        .indicator-criticity {
-            font-size: 0.9rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        
-        .criticity-high {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-        
-        .criticity-medium {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
-        
-        .criticity-low {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
+        .company-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         @media (max-width: 768px) {
@@ -400,7 +385,7 @@
                 font-size: 2.5rem;
             }
             
-            .performance-indicators {
+            .comparison-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -409,7 +394,7 @@
 <body>
     <div class="header">
         <h1>📊 Dashboard Executivo</h1>
-        <p class="subtitle">Análise Consolidada de Reclamações | Período: Janeiro - Junho 2025</p>
+        <p class="subtitle">Análise de Reclamações | Período: Janeiro - Junho 2025</p>
     </div>
     
     <div class="tabs-container">
@@ -419,8 +404,8 @@
         <button class="tab-btn" data-tab="diagonal">
             <i class="fas fa-city"></i> Diagonal Engenharia
         </button>
-        <button class="tab-btn" data-tab="consolidado">
-            <i class="fas fa-chart-pie"></i> Visão Consolidada
+        <button class="tab-btn" data-tab="comparacao">
+            <i class="fas fa-balance-scale"></i> Comparação
         </button>
     </div>
 
@@ -435,10 +420,10 @@
                     <div class="kpi-trend trend-up">↗ Crescimento constante</div>
                 </div>
                 
-                <div class="kpi-card warning">
-                    <div class="kpi-number">52%</div>
-                    <div class="kpi-label">Problemas Financeiros</div>
-                    <div class="kpi-trend trend-up">↗ Maior categoria</div>
+                <div class="kpi-card success">
+                    <div class="kpi-number">3,06%</div>
+                    <div class="kpi-label">Taxa de Reclamações</div>
+                    <div class="kpi-trend">↗ Em relação aos atendimentos</div>
                 </div>
                 
                 <div class="kpi-card info">
@@ -570,42 +555,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Indicadores de Performance -->
-            <div class="section">
-                <h2><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h2>
-                <div class="performance-indicators">
-                    <div class="indicator-card critical">
-                        <div class="indicator-value">28%</div>
-                        <div class="indicator-title">Obra/Construção</div>
-                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card warning">
-                        <div class="indicator-value">24%</div>
-                        <div class="indicator-title">Técnicos Pós-Entrega</div>
-                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card critical">
-                        <div class="indicator-value">22%</div>
-                        <div class="indicator-title">Atrasos/Prazos</div>
-                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card warning">
-                        <div class="indicator-value">17%</div>
-                        <div class="indicator-title">Financeiro/Contratual</div>
-                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card success">
-                        <div class="indicator-value">9%</div>
-                        <div class="indicator-title">Gestão/Atendimento</div>
-                        <span class="indicator-criticity criticity-low">🟢 Baixa criticidade</span>
-                    </div>
-                </div>
-            </div>
 
             <!-- Plano de Ação -->
             <div class="action-plan">
@@ -657,10 +606,10 @@
                     <div class="kpi-trend trend-up">↗ Concentração em poucos projetos</div>
                 </div>
                 
-                <div class="kpi-card warning">
-                    <div class="kpi-number">28%</div>
-                    <div class="kpi-label">Problemas de Obra</div>
-                    <div class="kpi-trend">→ Maior categoria</div>
+                <div class="kpi-card success">
+                    <div class="kpi-number">5,26%</div>
+                    <div class="kpi-label">Taxa de Reclamações</div>
+                    <div class="kpi-trend">↗ Em relação aos atendimentos</div>
                 </div>
                 
                 <div class="kpi-card info">
@@ -797,84 +746,30 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Indicadores de Performance -->
-            <div class="section">
-                <h2><i class="fas fa-tachometer-alt"></i> Indicadores de Performance</h2>
-                <div class="performance-indicators">
-                    <div class="indicator-card critical">
-                        <div class="indicator-value">13</div>
-                        <div class="indicator-title">Obra/Construção</div>
-                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card warning">
-                        <div class="indicator-value">11</div>
-                        <div class="indicator-title">Técnicos Pós-Entrega</div>
-                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card critical">
-                        <div class="indicator-value">10</div>
-                        <div class="indicator-title">Atrasos/Prazos</div>
-                        <span class="indicator-criticity criticity-high">🔴 Alta criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card warning">
-                        <div class="indicator-value">8</div>
-                        <div class="indicator-title">Financeiro/Contratual</div>
-                        <span class="indicator-criticity criticity-medium">🟡 Média criticidade</span>
-                    </div>
-                    
-                    <div class="indicator-card success">
-                        <div class="indicator-value">4</div>
-                        <div class="indicator-title">Gestão/Atendimento</div>
-                        <span class="indicator-criticity criticity-low">🟢 Baixa criticidade</span>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
-                    <div style="background: rgba(239, 68, 68, 0.08); padding: 1.5rem; border-radius: 10px;">
-                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #ef4444;">
-                            <i class="fas fa-sync-alt"></i> Taxa de Recorrência
-                        </div>
-                        <div style="font-size: 2.5rem; font-weight: 800; color: #ef4444;">35%</div>
-                        <div>Problemas recorrentes não resolvidos</div>
-                    </div>
-                    
-                    <div style="background: rgba(245, 158, 11, 0.08); padding: 1.5rem; border-radius: 10px;">
-                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #f59e0b;">
-                            <i class="fas fa-smile"></i> Satisfação do Cliente
-                        </div>
-                        <div style="font-size: 2.5rem; font-weight: 800; color: #f59e0b;">40%</div>
-                        <div>Baseada nos feedbacks recebidos</div>
-                    </div>
-                </div>
-            </div>
         </div>
         
-        <!-- Visão Consolidada -->
-        <div id="consolidado-content" class="tab-content">
+        <!-- Comparação entre empresas -->
+        <div id="comparacao-content" class="tab-content">
             <div class="section">
-                <h2><i class="fas fa-chart-pie"></i> Visão Consolidada - Victa & Diagonal</h2>
+                <h2><i class="fas fa-balance-scale"></i> Comparação de Desempenho</h2>
                 
                 <div class="kpi-grid">
-                    <div class="kpi-card critical">
+                    <div class="kpi-card info">
                         <div class="kpi-number">152</div>
                         <div class="kpi-label">Total de Reclamações</div>
                         <div class="kpi-trend">↗ Combinadas</div>
                     </div>
                     
-                    <div class="kpi-card warning">
-                        <div class="kpi-number">3.4%</div>
-                        <div class="kpi-label">Taxa de Reclamações</div>
+                    <div class="kpi-card success">
+                        <div class="kpi-number">3,06%</div>
+                        <div class="kpi-label">Victa: Taxa de Reclamações</div>
                         <div class="kpi-trend">↗ Em relação aos atendimentos</div>
                     </div>
                     
-                    <div class="kpi-card info">
-                        <div class="kpi-number">26</div>
-                        <div class="kpi-label">Empreendimentos Afetados</div>
-                        <div class="kpi-trend">→ Combinados</div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-number">5,26%</div>
+                        <div class="kpi-label">Diagonal: Taxa de Reclamações</div>
+                        <div class="kpi-trend trend-up">↗ Em relação aos atendimentos</div>
                     </div>
                     
                     <div class="kpi-card critical">
@@ -884,60 +779,72 @@
                     </div>
                 </div>
                 
-                <div class="charts-grid">
-                    <div class="chart-container">
-                        <div class="chart-title">Reclamações por Empresa</div>
-                        <canvas id="consolidado-empresaChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-title">Distribuição por Categoria Consolidada</div>
-                        <canvas id="consolidado-categoriaChart"></canvas>
+                <div class="comparison-section">
+                    <h3><i class="fas fa-percentage"></i> Análise Comparativa das Taxas de Reclamações</h3>
+                    
+                    <div class="comparison-grid">
+                        <div class="company-comparison victa-comparison">
+                            <div class="company-title" style="color: #3b82f6;">
+                                <i class="fas fa-building"></i> Victa Engenharia
+                            </div>
+                            <div class="kpi-number" style="color: #3b82f6; font-size: 2.5rem;">3,06%</div>
+                            <div class="kpi-trend">Taxa de reclamações</div>
+                            
+                            <div style="margin-top: 1.5rem;">
+                                <p><strong>Pontos fortes:</strong></p>
+                                <ul class="insight-list">
+                                    <li>
+                                        <div class="priority-indicator priority-low"></div>
+                                        <span>Taxa abaixo da média do setor</span>
+                                    </li>
+                                    <li>
+                                        <div class="priority-indicator priority-low"></div>
+                                        <span>Processos de atendimento bem estabelecidos</span>
+                                    </li>
+                                    <li>
+                                        <div class="priority-indicator priority-low"></div>
+                                        <span>Boa distribuição entre empreendimentos</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="company-comparison diagonal-comparison">
+                            <div class="company-title" style="color: #8b5cf6;">
+                                <i class="fas fa-city"></i> Diagonal Engenharia
+                            </div>
+                            <div class="kpi-number" style="color: #8b5cf6; font-size: 2.5rem;">5,26%</div>
+                            <div class="kpi-trend trend-up">Taxa de reclamações</div>
+                            
+                            <div style="margin-top: 1.5rem;">
+                                <p><strong>Áreas de oportunidade:</strong></p>
+                                <ul class="insight-list">
+                                    <li>
+                                        <div class="priority-indicator priority-high"></div>
+                                        <span>Taxa acima da média do setor</span>
+                                    </li>
+                                    <li>
+                                        <div class="priority-indicator priority-high"></div>
+                                        <span>Concentração de problemas em projetos específicos</span>
+                                    </li>
+                                    <li>
+                                        <div class="priority-indicator priority-medium"></div>
+                                        <span>Necessidade de melhorar processos pós-entrega</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="insights-grid" style="margin-top: 2rem;">
-                    <div class="insight-card">
-                        <h3>Principais Desafios Combinados</h3>
-                        <ul class="insight-list">
-                            <li>
-                                <div class="priority-indicator priority-high"></div>
-                                <span>Problemas financeiros (Victa) e de obra (Diagonal)</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-high"></div>
-                                <span>Atrasos em projetos de ambas as empresas</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-medium"></div>
-                                <span>Comunicação deficiente com clientes</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-medium"></div>
-                                <span>Problemas técnicos pós-entrega</span>
-                            </li>
-                        </ul>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">Comparação de Taxas de Reclamações</div>
+                        <canvas id="comparacao-taxasChart"></canvas>
                     </div>
-                    
-                    <div class="insight-card">
-                        <h3>Oportunidades de Melhoria</h3>
-                        <ul class="insight-list">
-                            <li>
-                                <div class="priority-indicator priority-high"></div>
-                                <span>Padronização de processos de atendimento</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-high"></div>
-                                <span>Implementação de sistema de gestão unificado</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-medium"></div>
-                                <span>Treinamento integrado de equipes</span>
-                            </li>
-                            <li>
-                                <div class="priority-indicator priority-medium"></div>
-                                <span>Compartilhamento de melhores práticas</span>
-                            </li>
-                        </ul>
+                    <div class="chart-container">
+                        <div class="chart-title">Distribuição de Categorias de Problemas</div>
+                        <canvas id="comparacao-categoriasChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -951,8 +858,8 @@
             datasets: [{
                 label: 'Reclamações por Mês',
                 data: [10, 8, 12, 28, 20, 28],
-                backgroundColor: '#ef4444',
-                borderColor: '#dc2626',
+                backgroundColor: '#3b82f6',
+                borderColor: '#2563eb',
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4
@@ -1024,27 +931,33 @@
             }]
         };
 
-        // Dados Consolidados
-        const consolidadoEmpresaData = {
+        // Dados para comparação
+        const taxasComparacaoData = {
             labels: ['Victa Engenharia', 'Diagonal Engenharia'],
             datasets: [{
-                data: [106, 46],
+                label: 'Taxa de Reclamações',
+                data: [3.06, 5.26],
                 backgroundColor: ['#3b82f6', '#8b5cf6'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
+                borderWidth: 0
             }]
         };
 
-        const consolidadoCategoriaData = {
-            labels: ['Obra/Construção', 'Técnicos Pós-Entrega', 'Financeiro', 'Atrasos/Prazos', 'Comercial/Vendas', 'Outros'],
-            datasets: [{
-                data: [41, 35, 33, 32, 29, 15],
-                backgroundColor: [
-                    '#ef4444', '#f59e0b', '#3b82f6', '#dc2626', '#10b981', '#8b5cf6'
-                ],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
+        const categoriasComparacaoData = {
+            labels: ['Assistência Técnica', 'Obra/Construção', 'Financeiro', 'Atrasos/Prazos', 'Comercial/Vendas', 'Outros'],
+            datasets: [
+                {
+                    label: 'Victa',
+                    data: [32, 4, 25, 0, 29, 16],
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderWidth: 0
+                },
+                {
+                    label: 'Diagonal',
+                    data: [0, 13, 8, 10, 0, 15],
+                    backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                    borderWidth: 0
+                }
+            ]
         };
 
         // Configuração dos gráficos
@@ -1144,17 +1057,46 @@
                 options: chartOptions
             });
 
-            // Gráficos Consolidados
-            new Chart(document.getElementById('consolidado-empresaChart'), {
-                type: 'pie',
-                data: consolidadoEmpresaData,
-                options: chartOptions
+            // Gráficos Comparação
+            new Chart(document.getElementById('comparacao-taxasChart'), {
+                type: 'bar',
+                data: taxasComparacaoData,
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Taxa (%)'
+                            }
+                        }
+                    }
+                }
             });
 
-            new Chart(document.getElementById('consolidado-categoriaChart'), {
-                type: 'doughnut',
-                data: consolidadoCategoriaData,
-                options: chartOptions
+            new Chart(document.getElementById('comparacao-categoriasChart'), {
+                type: 'bar',
+                data: categoriasComparacaoData,
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        }
+                    }
+                }
             });
         });
 
