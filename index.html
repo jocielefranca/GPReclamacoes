@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Executivo Estratégico - Victa & Diagonal</title>
+    <title>Relatório Executivo - Victa & Diagonal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -499,6 +499,101 @@
             line-height: 1;
         }
         
+        /* Performance Indicators */
+        .performance-section {
+            margin: 2.5rem 0;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--diagonal);
+        }
+        
+        .performance-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark);
+        }
+        
+        .performance-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .indicator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .indicator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .indicator-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .indicator-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .indicator-critical {
+            color: var(--critical);
+        }
+        
+        .indicator-warning {
+            color: var(--warning);
+        }
+        
+        .indicator-success {
+            color: var(--success);
+        }
+        
+        .indicator-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .criticidade-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .criticidade-high {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--critical);
+        }
+        
+        .criticidade-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .criticidade-low {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
         /* Recommendations */
         .action-plan {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -641,6 +736,10 @@
             }
             
             .charts-grid, .qualitative-grid, .criticity-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .performance-indicators {
                 grid-template-columns: 1fr;
             }
             
@@ -879,6 +978,96 @@
                 </div>
             </div>
             
+            <!-- Performance Indicators Section - DIAGONAL -->
+            <div class="performance-section">
+                <h3><i class="fas fa-chart-line"></i> Indicadores de Performance - Diagonal Engenharia</h3>
+                
+                <div class="performance-indicators">
+                    <div class="indicator-card">
+                        <div class="indicator-header">
+                            <div class="indicator-title">Obra/Construção</div>
+                            <div class="indicator-value indicator-critical">13 casos</div>
+                        </div>
+                        <div class="kpi-trend">28% do total de reclamações</div>
+                        <div class="indicator-footer">
+                            <span class="criticidade-indicator criticidade-high">
+                                <i class="fas fa-exclamation-circle"></i> Alta criticidade
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="indicator-card">
+                        <div class="indicator-header">
+                            <div class="indicator-title">Técnicos Pós-Entrega</div>
+                            <div class="indicator-value indicator-warning">11 casos</div>
+                        </div>
+                        <div class="kpi-trend">24% do total de reclamações</div>
+                        <div class="indicator-footer">
+                            <span class="criticidade-indicator criticidade-medium">
+                                <i class="fas fa-exclamation-triangle"></i> Média criticidade
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="indicator-card">
+                        <div class="indicator-header">
+                            <div class="indicator-title">Atrasos/Prazos</div>
+                            <div class="indicator-value indicator-critical">10 casos</div>
+                        </div>
+                        <div class="kpi-trend">22% do total de reclamações</div>
+                        <div class="indicator-footer">
+                            <span class="criticidade-indicator criticidade-high">
+                                <i class="fas fa-exclamation-circle"></i> Alta criticidade
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="indicator-card">
+                        <div class="indicator-header">
+                            <div class="indicator-title">Financeiro/Contratual</div>
+                            <div class="indicator-value indicator-warning">8 casos</div>
+                        </div>
+                        <div class="kpi-trend">17% do total de reclamações</div>
+                        <div class="indicator-footer">
+                            <span class="criticidade-indicator criticidade-medium">
+                                <i class="fas fa-exclamation-triangle"></i> Média criticidade
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="indicator-card">
+                        <div class="indicator-header">
+                            <div class="indicator-title">Gestão/Atendimento</div>
+                            <div class="indicator-value indicator-success">4 casos</div>
+                        </div>
+                        <div class="kpi-trend">9% do total de reclamações</div>
+                        <div class="indicator-footer">
+                            <span class="criticidade-indicator criticidade-low">
+                                <i class="fas fa-check-circle"></i> Baixa criticidade
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+                    <div style="flex: 1; background: rgba(239, 68, 68, 0.08); padding: 1.5rem; border-radius: 10px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--critical);">
+                            <i class="fas fa-sync-alt"></i> Taxa de Recorrência
+                        </div>
+                        <div class="kpi-number" style="color: var(--critical);">35%</div>
+                        <div>Problemas recorrentes não resolvidos</div>
+                    </div>
+                    
+                    <div style="flex: 1; background: rgba(245, 158, 11, 0.08); padding: 1.5rem; border-radius: 10px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--warning);">
+                            <i class="fas fa-smile"></i> Satisfação do Cliente
+                        </div>
+                        <div class="kpi-number" style="color: var(--warning);">40%</div>
+                        <div>Baseada nos feedbacks recebidos</div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="qualitative-grid">
                 <div class="qualitative-card">
                     <h3><i class="fas fa-hard-hat"></i> Problemas de Obra e Construção</h3>
@@ -966,126 +1155,6 @@
                             <span><strong>IVENS MONUMENTAL:</strong> Problemas com parcerias comerciais</span>
                         </li>
                     </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Critical Problems Section -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Problemas Críticos Identificados
-                </div>
-            </div>
-            
-            <div class="qualitative-grid">
-                <div class="qualitative-card" style="border-left-color: var(--critical);">
-                    <h3 style="border-color: var(--critical);"><i class="fas fa-fire"></i> Fortim Eco Village</h3>
-                    <div class="kpi-number" style="color: var(--critical);">12 reclamações</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Múltiplos atrasos na entrega</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Alteração não autorizada de numeração</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Postergação de assembleias sem consulta</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Ameaças de judicialização por clientes</span>
-                        </li>
-                    </ul>
-                    
-                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
-                        <strong>Ações Recomendadas:</strong> Revisão completa do cronograma, comunicação transparente com compradores, equipe dedicada para gestão de crise.
-                    </div>
-                </div>
-                
-                <div class="qualitative-card" style="border-left-color: var(--critical);">
-                    <h3 style="border-color: var(--critical);"><i class="fas fa-volume-up"></i> Diagonal by Pininfarina</h3>
-                    <div class="kpi-number" style="color: var(--critical);">2 reclamações (Alto impacto)</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Poluição sonora excessiva há 1 ano</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Equipamentos obsoletos e barulhentos</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Hóspedes internacionais se retirando do local</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Contaminação sonora do ambiente</span>
-                        </li>
-                    </ul>
-                    
-                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
-                        <strong>Ações Recomendadas:</strong> Substituição imediata de equipamentos, revisão de horários de obra, compensação a hóspedes afetados.
-                    </div>
-                </div>
-                
-                <div class="qualitative-card" style="border-left-color: var(--critical);">
-                    <h3 style="border-color: var(--critical);"><i class="fas fa-hard-hat"></i> Connect Beira Mar</h3>
-                    <div class="kpi-number" style="color: var(--critical);">5 reclamações</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Obra com apenas 45% com prazo vencendo</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Queda de materiais da obra</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-high"></div>
-                            <span>Risco de segurança pública</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Solicitações de distrato por parte de clientes</span>
-                        </li>
-                    </ul>
-                    
-                    <div style="background: rgba(239, 68, 68, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--critical);">
-                        <strong>Ações Recomendadas:</strong> Reforço de medidas de segurança, revisão realista do cronograma, transparência com compradores.
-                    </div>
-                </div>
-                
-                <div class="qualitative-card" style="border-left-color: var(--warning);">
-                    <h3 style="border-color: var(--warning);"><i class="fas fa-tools"></i> Legacy Condominium</h3>
-                    <div class="kpi-number" style="color: var(--warning);">6 reclamações</div>
-                    
-                    <ul class="insight-list">
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Problemas técnicos recorrentes não resolvidos</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Insatisfação com assistência técnica</span>
-                        </li>
-                        <li>
-                            <div class="priority-indicator priority-medium"></div>
-                            <span>Dificuldade em resolver problemas estruturais</span>
-                        </li>
-                    </ul>
-                    
-                    <div style="background: rgba(245, 158, 11, 0.08); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid var(--warning);">
-                        <strong>Ações Recomendadas:</strong> Revisão dos processos de manutenção, criação de protocolo de atendimento técnico.
-                    </div>
                 </div>
             </div>
         </div>
